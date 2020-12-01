@@ -28,7 +28,7 @@ void setup()
   digitalWrite(controlPin2, HIGH);
   digitalWrite(controlPin3, HIGH);
 
-  Serial.begin(9600);
+  Serial.begin(57600);
 }
 
 inline float readTempF(short id)

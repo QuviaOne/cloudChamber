@@ -115,21 +115,19 @@ void inline writeTemp(char unit)
   }
 }
 
+void inline fixedFrameRateLoop(int sinceLast)
+{
+  writeTemp('C');
+}
+
 long frames = micros() / frameRate;
 void inline runFixedFrameRateLoop()
 {
   if ((micros() / frameRate) - frames >= 1)
   {
     fixedFrameRateLoop(micros() - frames * frameRate);
-    frames = round(micros() / frameRate)
+    frames = round(micros() / frameRate);
   }
-}
-
-
-
-void inline fixedFrameRateLoop(int sinceLast)
-{
-  writeTemp('C');
 }
 void loop()
 {

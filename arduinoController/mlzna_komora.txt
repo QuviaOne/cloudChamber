@@ -1,0 +1,65 @@
+4x temprature sensor
+Kill swith breaker 
+    pumpa - 1x relay, 1x switch
+    motor - 1x relay, 1x switch
+    compressor - 1x relay, 1x switch
+    Peltier 1. 150W
+        1x regulatable psu
+        1x switch
+        1x transistor
+	1x power reader
+    (Peltier 2. 65W
+        1x regulatable psu
+        1x switch
+        1x transistor
+	1x power reader)
+    Led lights - 1x switch, 1x transistor
+    Rasbperry PI
+        5V source
+	powerbank
+
+
+
+
+
+
+
+
+
+	To have:
+1x pump
+4x temp sensor
+6x switch
+6x indication LED
+
+1x Raspberry PI
+1x small heatsink for peltier
+
+	Building materials:
+plexiglass
+ethanol for waterloop
+polystyrene
+tubes for waterloop (PVC for heat insulation!)
+chemopren, silicon, plexiglue
+
+
+	In the old itteration:
+1x led lights
+1x 150W peltier
+1x 65W peltier
+
+	To do:
+wiring
+	arduino
+	raspberry
+	stepdown
+	240 relay connection
+	control box
+
+waterloop
+	boxes
+	fittings
+
+cooling chamber
+	peltier stack
+	chamber

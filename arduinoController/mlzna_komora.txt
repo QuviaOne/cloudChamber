@@ -63,3 +63,7 @@ waterloop
 cooling chamber
 	peltier stack
 	chamber
+
+programming
+	raspberry pi (read, send, instruct)
+	arduino (receive instructions)

@@ -4,10 +4,11 @@ class Connection extends SerialPort {
     constructor() {
         super(config.portPath, {
             autoOpen: false,
-            baudRate: config.baudRate 
+            baudRate: config.baudRate
         });
         this.parser = new SerialPort.parsers.Readline(config.newLineChar);
         this.pipe(this.parser);
+        this.resetMemory();
     }
     /**
      * @returns {Promise<void>}
@@ -26,6 +27,23 @@ class Connection extends SerialPort {
         return new Promise((resolve, reject) => {
             this.write(text + "\n", resolve);
         })
+    }
+    async togglePump() {
+        this.pumpRunning = !this.pumpRunning;
+        await this.writeLine("_2");
+    }
+    async toggleCompressor() {
+        this.compressorRunning = !this.compressorRunning;
+        await this.writeLine("_3");
+    }
+    async toggleFan() {
+        this.fanRunning = !this.fanRunning;
+        await this.writeLine("_1");
+    }
+    resetMemory() {
+        this.pumpRunning = false;
+        this.fanRunning = false;
+        this.compressorRunning = false;
     }
 }
 module.exports.Connection = Connection;

@@ -1,4 +1,5 @@
 {
     "portPath": "COM3",
-    "baudRate": 57600
+    "baudRate": 115200,
+    "newLineChar": "\n"
 }

@@ -4,18 +4,10 @@ class Connection extends SerialPort {
     constructor() {
         super(config.portPath, {
             autoOpen: false,
-            baudRate: config.baudRate
+            baudRate: config.baudRate 
         });
-        this.on('readable', function () {
-            this.onData(this.read().toString());
-        })
-    }
-    /**
-     * 
-     * @param {String} data 
-     */
-    onData(data) {
-        console.log(data)
+        this.parser = new SerialPort.parsers.Readline(config.newLineChar);
+        this.pipe(this.parser);
     }
     /**
      * @returns {Promise<void>}

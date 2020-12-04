@@ -1,3 +1,4 @@
 {
-    "portPath": "COM5"
+    "portPath": "COM3",
+    "baudRate": 57600
 }

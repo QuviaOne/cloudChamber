@@ -4,12 +4,36 @@ int tempPin3 = A3;
 int tempPin4 = A4;
 int tempPin5 = A5;
 
+bool cP1 = false;
+bool cP2 = false;
+bool cP3 = false;
 int controlPin1 = 2;
 int controlPin2 = 3;
 int controlPin3 = 4;
 
 const float tempConstant = 0.48828125;
 const float frameRate = 1000000 / 30;
+
+inline void updateOutPins(){
+  if (cP1){
+    digitalWrite(controlPin1, HIGH);
+  }
+  else{
+    digitalWrite(controlPin1, LOW);
+  }
+  if (cP2){
+    digitalWrite(controlPin2, HIGH);
+  }
+  else{
+    digitalWrite(controlPin2, LOW);
+  }
+  if (cP3){
+    digitalWrite(controlPin3, HIGH);
+  }
+  else{
+    digitalWrite(controlPin3, LOW);
+  }
+}
 
 void setup()
 {
@@ -24,11 +48,11 @@ void setup()
   pinMode(controlPin2, OUTPUT);
   pinMode(controlPin3, OUTPUT);
 
-  digitalWrite(controlPin1, HIGH);
-  digitalWrite(controlPin2, HIGH);
-  digitalWrite(controlPin3, HIGH);
+  updateOutPins();
 
-  Serial.begin(57600);
+  Serial.begin(115200);
+
+  Serial.println("reset");
 }
 
 inline float readTempF(short id)
@@ -131,5 +155,18 @@ void inline runFixedFrameRateLoop()
 }
 void loop()
 {
+   if (Serial.available() > 0) {
+    String data = Serial.readStringUntil('\n');
+    if (data == "_1"){
+      cP1 = !cP1;
+    }
+    else if (data == "_2"){
+      cP2 = !cP2;
+    }
+    else if (data == "_3"){
+      cP3 = !cP3;
+    }
+    updateOutPins();
+  }
   runFixedFrameRateLoop();
 }

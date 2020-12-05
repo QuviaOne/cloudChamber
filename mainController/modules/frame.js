@@ -20,7 +20,7 @@ class FrameManager extends Array {
         super();
     }
     addFrame(obj) {
-        if (this.length > 1e6) this.splice(0, 1);
+        if (this.length > 30*60*30) this.splice(0, 1);
         this.push(new Frame(this, obj.temps));
     }
     /**

@@ -1,5 +1,6 @@
 const SerialPort = require('serialport');
 const config = require('../config.json');
+const { Frame, FrameManager } = require('./frame.js');
 class Connection extends SerialPort {
     constructor() {
         super(config.portPath, {
@@ -9,6 +10,19 @@ class Connection extends SerialPort {
         this.parser = new SerialPort.parsers.Readline(config.newLineChar);
         this.pipe(this.parser);
         this.resetMemory();
+        /**
+         * @type {FrameManager}
+         */
+        this.frames = new FrameManager();
+        this.parser.on("data", data => {
+            if (data == "reset") return this.resetMemory();
+            try {
+                data = JSON.parse(data);
+                if (data.id == "frame") return this.onFrame(data);
+            } catch (e) {
+                console.log(data);
+            }
+        })
     }
     /**
      * @returns {Promise<void>}
@@ -48,10 +62,30 @@ class Connection extends SerialPort {
         this.pwmPower = new Ratio(power);
         await this.writeLine("_pwm " + this.pwmPower.toRange(0, 255));
     }
+    /**
+     * 
+     * @param {FrameManager} frameManager 
+     */
+    startAutomaticPWM(frameManager) {
+        this.pwmAutomatic = true;
+    }
+    stopAutomaticPWM() {
+        this.pwmAutomatic = false;
+    }
     resetMemory() {
         this.pumpRunning = false;
         this.fanRunning = false;
         this.compressorRunning = false;
+    }
+    onFrame(frameData) {
+        this.frames.addFrame(frameData);
+        if (this.pwmAutomatic) this.pwmFeedbackLoop();
+    }
+    /**
+     * @private
+     */
+    pwmFeedbackLoop() {
+        console.log(this.frames.length);
     }
 }
 module.exports.Connection = Connection;

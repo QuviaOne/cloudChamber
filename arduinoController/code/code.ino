@@ -14,6 +14,13 @@ int controlPin3 = 4;
 const float tempConstant = 0.48828125;
 const float frameRate = 1000000 / 30;
 
+//TEMPRATURE CORRECTION CONSTANTS
+const float sensor1CorrectionalConstant = 10;
+const float sensor2CorrectionalConstant = 7;
+const float sensor3CorrectionalConstant = 7;
+const float sensor4CorrectionalConstant = 7;
+const float sensor5CorrectionalConstant = 7;
+
 inline void updateOutPins(){
   if (cP1){
     digitalWrite(controlPin1, HIGH);
@@ -59,23 +66,23 @@ inline float readTempF(short id)
 {
   if (id == 1)
   {
-    return (analogRead(tempPin1) * tempConstant);
+    return (analogRead(tempPin1) * tempConstant + sensor1CorrectionalConstant);
   }
   if (id == 2)
   {
-    return (analogRead(tempPin2) * tempConstant);
+    return (analogRead(tempPin2) * tempConstant + sensor2CorrectionalConstant);
   }
   if (id == 3)
   {
-    return (analogRead(tempPin3) * tempConstant);
+    return (analogRead(tempPin3) * tempConstant + sensor3CorrectionalConstant);
   }
   if (id == 4)
   {
-    return (analogRead(tempPin4) * tempConstant);
+    return (analogRead(tempPin4) * tempConstant + sensor4CorrectionalConstant);
   }
   if (id == 5)
   {
-    return (analogRead(tempPin5) * tempConstant);
+    return (analogRead(tempPin5) * tempConstant) + sensor5CorrectionalConstant;
   }
   return (0);
 }

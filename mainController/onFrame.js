@@ -4,7 +4,7 @@ module.exports = async frame => {
     // console.log(frame.temps);
     
     fm.addFrame(frame);
-    if (fm.length % 30 == 0) {
+    if (fm.length % 300 == 0) {
         console.log(fm.lastFrame().temps)
     }
 }

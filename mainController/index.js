@@ -1,5 +1,5 @@
-const Serial = require('./modules/serialModule');
-const onFrame = require('./onFrame');
+const Serial = require('./modules/serialModule.js');
+const onFrame = require('./onFrame.js');
 /**
  * @type {Serial.Connection}
  */

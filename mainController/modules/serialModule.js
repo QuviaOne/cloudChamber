@@ -40,6 +40,14 @@ class Connection extends SerialPort {
         this.fanRunning = !this.fanRunning;
         await this.writeLine("_1");
     }
+    /**
+     * 
+     * @param {Number} power 
+     */
+    async setPWM(power) {
+        this.pwmPower = new Ratio(power);
+        await this.writeLine("_pwm " + this.pwmPower.toRange(0, 255));
+    }
     resetMemory() {
         this.pumpRunning = false;
         this.fanRunning = false;
@@ -47,3 +55,35 @@ class Connection extends SerialPort {
     }
 }
 module.exports.Connection = Connection;
+class Ratio extends Number {
+    /**
+     * 
+     * @param {Number} a 
+     * @param {Number} b 
+     */
+    constructor(a, b) {
+        if (!a) super(1); else if (!b) super(a); else super(a / b);
+    }
+    /**
+     * 
+     * @param {Number} max
+     * @param {Number} min
+     * @returns {Number}
+     */
+    toRange(max, min = 0) {
+        return Math.round(this * (max - min) + min);
+    }
+    /**
+     * @returns {Number}
+     */
+    toPercent() {
+        return this * 100;
+    }
+    /**
+     * @returns {String}
+     */
+    toPercentString() {
+        return (this * 100) + "%";
+    }
+
+}

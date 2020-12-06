@@ -15,23 +15,38 @@ int controlPin3 = 4;
 const float tempConstant = 0.48828125;
 const float frameRate = 1000000 / 30;
 
-inline void updateOutPins(){
-  if (cP1){
+inline void updateOutPins()
+{
+  if (cP1)
+  {
     digitalWrite(controlPin1, HIGH);
   }
-  else{
+  else
+  {
     digitalWrite(controlPin1, LOW);
   }
-  if (cP2){
+  if (cP2)
+  {
     digitalWrite(controlPin2, HIGH);
   }
-  else{
+  else
+  {
     digitalWrite(controlPin2, LOW);
   }
-  if (cP3){
-    digitalWrite(controlPin3, pumpCycleStatus ? HIGH : LOW);
+  if (cP3)
+  {
+    if (pumpCycleStatus)
+    {
+      digitalWrite(controlPin3,HIGH);
+    }
+    else
+    {
+      digitalWrite(controlPin3, LOW);
+    }
+    //
   }
-  else{
+  else
+  {
     digitalWrite(controlPin3, LOW);
   }
 }
@@ -156,16 +171,20 @@ void inline runFixedFrameRateLoop()
 }
 void loop()
 {
-   pumpCycleStatus = micros() % 5000000 < 500000;
-   if (Serial.available() > 0) {
+  pumpCycleStatus = micros() % 5000000 < 500000;
+  if (Serial.available() > 0)
+  {
     String data = Serial.readStringUntil('\n');
-    if (data == "_1"){
+    if (data == "_1")
+    {
       cP1 = !cP1;
     }
-    else if (data == "_2"){
+    else if (data == "_2")
+    {
       cP2 = !cP2;
     }
-    else if (data == "_3"){
+    else if (data == "_3")
+    {
       cP3 = !cP3;
     }
     updateOutPins();

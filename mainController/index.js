@@ -5,7 +5,6 @@ const conn = new Serial.Connection();
  */
 async function main() {
     await conn.start();
-    conn.startAutomaticPWM();
 }
 main();
 /**
@@ -25,6 +24,8 @@ process.stdin.on("data", data => {
     if (data == "pump") return conn.togglePump();
     if (data == "fan") return conn.toggleFan();
     if (data == "compressor") return conn.toggleCompressor();
-    if (data == "pwmAuto") if (conn.pwmAutomatic) conn.stopAutomaticPWM(); else conn.startAutomaticPWM();
+    if (data == "pwmAuto")
+        if (conn.pwmAutomatic) conn.stopAutomaticPWM();
+        else conn.startAutomaticPWM();
     if (data.split(" ")[0] == "pwm") conn.setPWM(Number(data.split(" ")[0]) / 255)
 })

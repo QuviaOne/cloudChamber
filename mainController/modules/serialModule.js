@@ -32,7 +32,7 @@ class Connection extends SerialPort {
             var t = this;
             this.open(e => {
                 if (e) setTimeout(() => {
-                        t.start();
+                    t.start();
                 }, 1000);
             });
             this.removeAllListeners("open");
@@ -54,11 +54,11 @@ class Connection extends SerialPort {
     }
     async toggleCompressor() {
         this.compressorRunning = !this.compressorRunning;
-        await this.writeLine("_3");
+        await this.writeLine("_1");
     }
     async toggleFan() {
         this.fanRunning = !this.fanRunning;
-        await this.writeLine("_1");
+        await this.writeLine("_3");
     }
     /**
      * 
@@ -83,14 +83,16 @@ class Connection extends SerialPort {
     }
     onFrame(frameData) {
         this.frames.addFrame(frameData);
-        if (this.pwmAutomatic) this.pwmFeedbackLoop();
+
+        if (this.frames.length % 30 == 0) {
+            console.log(this.frames.lastFrame().temps);
+        }
     }
 
     /**
      * @private
      */
     pwmFeedbackLoop() {
-        console.log(this.frames.length);
     }
 }
 module.exports.Connection = Connection;

@@ -35,6 +35,7 @@ class Connection extends SerialPort {
                         t.start();
                 }, 1000);
             });
+            this.removeAllListeners("open");
             this.on("open", resolve);
         })
     }
@@ -58,10 +59,6 @@ class Connection extends SerialPort {
     async toggleFan() {
         this.fanRunning = !this.fanRunning;
         await this.writeLine("_1");
-    }
-    async togglePeltier() {
-        this.peltierRunning = !this.peltierRunning;
-        await this.writeLine("_4");
     }
     /**
      * 

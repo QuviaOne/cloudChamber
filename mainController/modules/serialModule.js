@@ -29,7 +29,12 @@ class Connection extends SerialPort {
      */
     start() {
         return new Promise((resolve, reject) => {
-            this.open();
+            var t = this;
+            this.open(e => {
+                if (e) setTimeout(() => {
+                        t.start();
+                }, 1000);
+            });
             this.on("open", resolve);
         })
     }
@@ -54,6 +59,10 @@ class Connection extends SerialPort {
         this.fanRunning = !this.fanRunning;
         await this.writeLine("_1");
     }
+    async togglePeltier() {
+        this.peltierRunning = !this.peltierRunning;
+        await this.writeLine("_4");
+    }
     /**
      * 
      * @param {Number} power 
@@ -62,12 +71,9 @@ class Connection extends SerialPort {
         this.pwmPower = new Ratio(power);
         await this.writeLine("_pwm " + this.pwmPower.toRange(0, 255));
     }
-    /**
-     * 
-     * @param {FrameManager} frameManager 
-     */
-    startAutomaticPWM(frameManager) {
+    startAutomaticPWM() {
         this.pwmAutomatic = true;
+
     }
     stopAutomaticPWM() {
         this.pwmAutomatic = false;
@@ -76,11 +82,13 @@ class Connection extends SerialPort {
         this.pumpRunning = false;
         this.fanRunning = false;
         this.compressorRunning = false;
+        this.peltierRunning = false;
     }
     onFrame(frameData) {
         this.frames.addFrame(frameData);
         if (this.pwmAutomatic) this.pwmFeedbackLoop();
     }
+
     /**
      * @private
      */

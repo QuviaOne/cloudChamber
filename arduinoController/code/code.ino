@@ -7,10 +7,12 @@ int tempPin5 = A5;
 bool cP1 = false;
 bool cP2 = false;
 bool cP3 = false;
+bool cP4 = false;
+
 int controlPin1 = 2;
 int controlPin2 = 3;
 int controlPin3 = 4;
-
+int controlPin4 = 5;
 const float tempConstant = 0.48828125;
 const float frameRate = 1000000 / 30;
 
@@ -21,24 +23,39 @@ const float sensor3CorrectionalConstant = 7;
 const float sensor4CorrectionalConstant = 7;
 const float sensor5CorrectionalConstant = 7;
 
-inline void updateOutPins(){
-  if (cP1){
+inline void updateOutPins()
+{
+  if (cP1)
+  {
     digitalWrite(controlPin1, HIGH);
   }
-  else{
+  else
+  {
     digitalWrite(controlPin1, LOW);
   }
-  if (cP2){
+  if (cP2)
+  {
     digitalWrite(controlPin2, HIGH);
   }
-  else{
+  else
+  {
     digitalWrite(controlPin2, LOW);
   }
-  if (cP3){
+  if (cP3)
+  {
     digitalWrite(controlPin3, HIGH);
   }
-  else{
+  else
+  {
     digitalWrite(controlPin3, LOW);
+  }
+  if (cP4)
+  {
+    digitalWrite(controlPin4, HIGH);
+  }
+  else
+  {
+    digitalWrite(controlPin4, LOW);
   }
 }
 
@@ -162,16 +179,24 @@ void inline runFixedFrameRateLoop()
 }
 void loop()
 {
-   if (Serial.available() > 0) {
+  if (Serial.available() > 0)
+  {
     String data = Serial.readStringUntil('\n');
-    if (data == "_1"){
+    if (data == "_1")
+    {
       cP1 = !cP1;
     }
-    else if (data == "_2"){
+    else if (data == "_2")
+    {
       cP2 = !cP2;
     }
-    else if (data == "_3"){
+    else if (data == "_3")
+    {
       cP3 = !cP3;
+    }
+    else if (data == "_4")
+    {
+      cP4 = !cP4;
     }
     updateOutPins();
   }
